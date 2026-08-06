@@ -7,7 +7,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 window.vote = async function () {
-  
+
     let name = document.getElementById("name").value.trim();
     let email = document.getElementById("email").value.trim();
 
@@ -31,14 +31,25 @@ window.vote = async function () {
 
     try{
 
+        // Check if this Gmail has already voted
+        const q = query(
+            collection(db, "votes"),
+            where("email", "==", email)
+        );
+
+        const snapshot = await getDocs(q);
+
+        if(!snapshot.empty){
+            alert("❌ This Gmail has already voted.");
+            return;
+        }
+
+        // Save vote
         await addDoc(collection(db,"votes"),{
 
             name:name,
-
             email:email,
-
             candidate:candidate.value,
-
             votedAt:new Date()
 
         });
@@ -46,7 +57,9 @@ window.vote = async function () {
         document.getElementById("result").innerHTML =
         "✅ Your vote has been submitted successfully.";
 
-        alert("Thank you for voting!");
+        alert("🎉 Thank you for voting!");
+
+        document.getElementById("voteForm").reset();
 
     }catch(error){
 
