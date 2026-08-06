@@ -1,53 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FIDEEN e-Voting</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FIDEEN eVote</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>🗳 FIDEEN e-Voting</h1>
+<h1>🗳 FIDEEN eVote</h1>
 
-<p>Please login with your Gmail before voting.</p>
+<p>Vote for your preferred candidate.</p>
 
-<button id="loginBtn">Login with Google</button>
+<input type="text" id="name" placeholder="Your Full Name">
 
-<div id="userInfo" style="display:none;">
-    <h3 id="welcome"></h3>
+<input type="email" id="email" placeholder="Your Gmail Address">
 
-    <h2>Vote for Best Executive</h2>
+<h3>Select Candidate</h3>
 
-    <form id="voteForm">
+<label>
+<input type="radio" name="candidate" value="Candidate A">
+Candidate A
+</label>
 
-        <label>
-            <input type="radio" name="candidate" value="Amir" required>
-            Amir
-        </label><br>
+<label>
+<input type="radio" name="candidate" value="Candidate B">
+Candidate B
+</label>
 
-        <label>
-            <input type="radio" name="candidate" value="PRO">
-            PRO
-        </label><br>
+<label>
+<input type="radio" name="candidate" value="Candidate C">
+Candidate C
+</label>
 
-        <label>
-            <input type="radio" name="candidate" value="Coordinator">
-            Coordinator
-        </label><br><br>
+<button onclick="vote()">Submit Vote</button>
 
-        <button type="submit">Submit Vote</button>
-
-    </form>
-
-</div>
-
-<h2>Live Results</h2>
-
-<div id="results"></div>
+<div id="result"></div>
 
 </div>
 
