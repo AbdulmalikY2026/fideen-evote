@@ -7,6 +7,8 @@ import {
 
 window.vote = async function () {
 
+  loadElection();
+  
     let name = document.getElementById("name").value.trim();
     let email = document.getElementById("email").value.trim();
 
