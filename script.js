@@ -1,123 +1,48 @@
+import { db } from "./firebase.js";
+
 import {
-  collection,
-  addDoc,
-  query,
-  where,
-  getDocs
+    collection,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-window.vote = async function () {
+async function loadResults(){
 
-    let name = document.getElementById("name").value.trim();
-    let email = document.getElementById("email").value.trim();
+    const snapshot = await getDocs(collection(db,"votes"));
 
-    let candidate =
-    document.querySelector('input[name="candidate"]:checked');
+    let html = "";
 
-    if(name === ""){
-        alert("Please enter your full name.");
-        return;
-    }
+    let totals = {};
 
-    if(email === ""){
-        alert("Please enter your Gmail.");
-        return;
-    }
+    snapshot.forEach((doc)=>{
 
-    if(!candidate){
-        alert("Please select a candidate.");
-        return;
-    }
+        let vote = doc.data();
 
-    try{
+        totals[vote.candidate] = (totals[vote.candidate] || 0) + 1;
 
-        // Check if this Gmail has already voted
-        const q = query(
-            collection(db, "votes"),
-            where("email", "==", email)
-        );
-
-        const snapshot = await getDocs(q);
-
-        if(!snapshot.empty){
-            alert("❌ This Gmail has already voted.");
-            return;
-        }
-
-        // Save vote
-        await addDoc(collection(db,"votes"),{
-
-            name:name,
-            email:email,
-            candidate:candidate.value,
-            votedAt:new Date()
-
-        });
-
-        document.getElementById("result").innerHTML =
-        "✅ Your vote has been submitted successfully.";
-
-        alert("🎉 Thank you for voting!");
-
-        document.getElementById("voteForm").reset();
-
-    }catch(error){
-
-        alert(error.message);
-
-    }
-
-}
-
-function createPoll(){
-
-    let title = document.getElementById("pollTitle").value;
-
-    let candidates =
-        document.getElementById("candidateList")
-        .value
-        .split("\n")
-        .filter(c => c.trim() !== "");
-
-    localStorage.setItem("pollTitle", title);
-    localStorage.setItem("candidates",
-        JSON.stringify(candidates));
-
-    alert("✅ Election Created Successfully!");
-
-}
-
-// Load Election
-function loadElection(){
-
-    let title = localStorage.getItem("pollTitle");
-    let candidates = JSON.parse(localStorage.getItem("candidates")) || [];
-
-    if(document.getElementById("voteTitle")){
-        document.getElementById("voteTitle").innerText = title || "No Active Election";
-    }
-
-    let container = document.getElementById("candidateContainer");
-
-    if(!container) return;
-
-    container.innerHTML = "";
-
-    candidates.forEach(function(candidate){
-
-        container.innerHTML += `
-        <label style="display:block;margin:10px 0;">
-            <input type="radio" name="candidate" value="${candidate}">
-            ${candidate}
-        </label>
+        html += `
+        <div style="border:1px solid #ddd;padding:15px;margin:10px 0;border-radius:10px;">
+            <h3>${vote.name}</h3>
+            <p><strong>Email:</strong> ${vote.email}</p>
+            <p><strong>Voted For:</strong> ${vote.candidate}</p>
+        </div>
         `;
 
     });
 
+    html += "<hr><h2>Vote Totals</h2>";
+
+    for(let candidate in totals){
+
+        html += `
+        <div style="padding:10px;background:#f5f5f5;margin:8px 0;border-radius:8px;">
+            <strong>${candidate}</strong>: ${totals[candidate]} Vote(s)
+        </div>
+        `;
+
+    }
+
+    document.getElementById("results").innerHTML = html;
+
 }
 
-window.onload = function(){
-
-    loadElection();
-
-}
+loadResults();
