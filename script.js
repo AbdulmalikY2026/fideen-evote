@@ -101,3 +101,9 @@ function loadElection(){
     });
 
 }
+
+window.onload = function(){
+
+    loadElection();
+
+}
