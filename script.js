@@ -54,3 +54,21 @@ window.vote = async function () {
     }
 
 }
+
+function createPoll(){
+
+    let title = document.getElementById("pollTitle").value;
+
+    let candidates =
+        document.getElementById("candidateList")
+        .value
+        .split("\n")
+        .filter(c => c.trim() !== "");
+
+    localStorage.setItem("pollTitle", title);
+    localStorage.setItem("candidates",
+        JSON.stringify(candidates));
+
+    alert("✅ Election Created Successfully!");
+
+}
