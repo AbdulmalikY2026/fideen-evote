@@ -72,3 +72,32 @@ function createPoll(){
     alert("✅ Election Created Successfully!");
 
 }
+
+// Load Election
+function loadElection(){
+
+    let title = localStorage.getItem("pollTitle");
+    let candidates = JSON.parse(localStorage.getItem("candidates")) || [];
+
+    if(document.getElementById("voteTitle")){
+        document.getElementById("voteTitle").innerText = title || "No Active Election";
+    }
+
+    let container = document.getElementById("candidateContainer");
+
+    if(!container) return;
+
+    container.innerHTML = "";
+
+    candidates.forEach(function(candidate){
+
+        container.innerHTML += `
+        <label style="display:block;margin:10px 0;">
+            <input type="radio" name="candidate" value="${candidate}">
+            ${candidate}
+        </label>
+        `;
+
+    });
+
+}
