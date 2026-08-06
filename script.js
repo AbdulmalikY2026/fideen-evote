@@ -6,8 +6,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 window.vote = async function () {
-
-  loadElection();
   
     let name = document.getElementById("name").value.trim();
     let email = document.getElementById("email").value.trim();
