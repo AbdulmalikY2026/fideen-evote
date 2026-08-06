@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,31 +8,38 @@
 <link rel="stylesheet" href="style.css">
 </head>
 
-<img src="file_000000006b08720aae07e71ef672adcb.png" alt="FIDEEN Logo" width="120">
-  
 <body>
 
 <div class="container">
+
+<img src="file_000000006b08720aae07e71ef672adcb.png" alt="FIDEEN Logo" width="120">
 
 <h1>🗳 FIDEEN eVote</h1>
 
 <p>Vote for your preferred candidate.</p>
 
-<input type="text" id="name" placeholder="Your Full Name">
+<form id="voteForm" onsubmit="event.preventDefault(); vote();">
 
-<input type="email" id="email" placeholder="Your Gmail Address">
+<input type="text" id="name" placeholder="Your Full Name" required>
 
-<h3>Select Candidate</h3>
+<input type="email" id="email" placeholder="Your Gmail Address" required>
 
 <h2 id="voteTitle">Election</h2>
 
 <div id="candidateContainer"></div>
 
-<button onclick="vote()">Submit Vote</button>
+<br>
+
+<button type="submit">Submit Vote</button>
+
+</form>
+
+<div id="result"></div>
 
 </div>
 
 <script type="module" src="script.js"></script>
 
 </body>
+
 </html>
