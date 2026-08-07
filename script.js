@@ -1,11 +1,11 @@
-import { db } from "./firebase.js";
-
 import {
   collection,
   addDoc,
   query,
   where,
-  getDocs
+  getDocs,
+  setDoc,
+  doc
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 window.vote = async function () {
