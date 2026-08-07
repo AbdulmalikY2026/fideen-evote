@@ -63,3 +63,86 @@ window.vote = async function () {
     }
 
 }
+
+// ===============================
+// CREATE ELECTION
+// ===============================
+
+window.createPoll = function(){
+
+    let title = document.getElementById("pollTitle").value.trim();
+
+    let candidates = document
+        .getElementById("candidateList")
+        .value
+        .split("\n")
+        .map(c => c.trim())
+        .filter(c => c !== "");
+
+    if(title === ""){
+        alert("Please enter an election title.");
+        return;
+    }
+
+    if(candidates.length < 2){
+        alert("Please enter at least 2 candidates.");
+        return;
+    }
+
+    localStorage.setItem("pollTitle", title);
+    localStorage.setItem("candidates", JSON.stringify(candidates));
+
+    document.getElementById("message").innerHTML =
+    "✅ Election created successfully!";
+
+}
+
+
+// ===============================
+// LOAD ELECTION
+// ===============================
+
+function loadElection(){
+
+    let title = localStorage.getItem("pollTitle");
+
+    let candidates =
+        JSON.parse(localStorage.getItem("candidates")) || [];
+
+    let titleElement =
+        document.getElementById("voteTitle");
+
+    let container =
+        document.getElementById("candidateContainer");
+
+    if(!titleElement || !container) return;
+
+    titleElement.innerHTML = title || "No Active Election";
+
+    container.innerHTML = "";
+
+    candidates.forEach(function(candidate){
+
+        container.innerHTML += `
+        <label style="display:block;margin:12px 0;">
+            <input type="radio"
+                   name="candidate"
+                   value="${candidate}">
+            ${candidate}
+        </label>
+        `;
+
+    });
+
+}
+
+
+// ===============================
+// PAGE LOAD
+// ===============================
+
+window.onload = function(){
+
+    loadElection();
+
+}
