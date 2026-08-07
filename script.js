@@ -12,7 +12,6 @@ window.vote = async function () {
 
     let name = document.getElementById("name").value.trim();
     let email = document.getElementById("email").value.trim();
-
     let candidate = document.querySelector('input[name="candidate"]:checked');
 
     if(name === ""){
@@ -45,18 +44,17 @@ window.vote = async function () {
         }
 
         await addDoc(collection(db,"votes"),{
-            name:name,
-            email:email,
-            candidate:candidate.value,
-            votedAt:new Date()
+            name: name,
+            email: email,
+            candidate: candidate.value,
+            votedAt: new Date()
         });
 
-        document.getElementById("result").innerHTML =
-        "✅ Your vote has been submitted successfully.";
+        alert("✅ Thank you for voting!");
 
         document.getElementById("voteForm").reset();
-
-        alert("🎉 Thank you for voting!");
+        document.getElementById("result").innerHTML =
+        "Your vote has been submitted successfully.";
 
     }catch(error){
 
