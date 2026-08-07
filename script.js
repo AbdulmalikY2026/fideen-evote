@@ -1,48 +1,67 @@
 import { db } from "./firebase.js";
 
 import {
-    collection,
-    getDocs
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
-async function loadResults(){
+window.vote = async function () {
 
-    const snapshot = await getDocs(collection(db,"votes"));
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
 
-    let html = "";
+    let candidate = document.querySelector('input[name="candidate"]:checked');
 
-    let totals = {};
+    if(name === ""){
+        alert("Please enter your full name.");
+        return;
+    }
 
-    snapshot.forEach((doc)=>{
+    if(email === ""){
+        alert("Please enter your Gmail.");
+        return;
+    }
 
-        let vote = doc.data();
+    if(!candidate){
+        alert("Please select a candidate.");
+        return;
+    }
 
-        totals[vote.candidate] = (totals[vote.candidate] || 0) + 1;
+    try{
 
-        html += `
-        <div style="border:1px solid #ddd;padding:15px;margin:10px 0;border-radius:10px;">
-            <h3>${vote.name}</h3>
-            <p><strong>Email:</strong> ${vote.email}</p>
-            <p><strong>Voted For:</strong> ${vote.candidate}</p>
-        </div>
-        `;
+        const q = query(
+            collection(db,"votes"),
+            where("email","==",email)
+        );
 
-    });
+        const snapshot = await getDocs(q);
 
-    html += "<hr><h2>Vote Totals</h2>";
+        if(!snapshot.empty){
+            alert("❌ This Gmail has already voted.");
+            return;
+        }
 
-    for(let candidate in totals){
+        await addDoc(collection(db,"votes"),{
+            name:name,
+            email:email,
+            candidate:candidate.value,
+            votedAt:new Date()
+        });
 
-        html += `
-        <div style="padding:10px;background:#f5f5f5;margin:8px 0;border-radius:8px;">
-            <strong>${candidate}</strong>: ${totals[candidate]} Vote(s)
-        </div>
-        `;
+        document.getElementById("result").innerHTML =
+        "✅ Your vote has been submitted successfully.";
+
+        document.getElementById("voteForm").reset();
+
+        alert("🎉 Thank you for voting!");
+
+    }catch(error){
+
+        alert(error.message);
 
     }
 
-    document.getElementById("results").innerHTML = html;
-
 }
-
-loadResults();
