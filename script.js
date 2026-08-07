@@ -68,34 +68,24 @@ window.vote = async function () {
 // CREATE ELECTION
 // ===============================
 
-window.createPoll = function(){
+window.createPoll = async function(){
 
     let title = document.getElementById("pollTitle").value.trim();
 
-    let candidates = document
-        .getElementById("candidateList")
+    let candidates = document.getElementById("candidateList")
         .value
         .split("\n")
         .map(c => c.trim())
         .filter(c => c !== "");
 
-    if(title === ""){
-        alert("Please enter an election title.");
-        return;
-    }
-
-    if(candidates.length < 2){
-        alert("Please enter at least 2 candidates.");
-        return;
-    }
-
-    localStorage.setItem("pollTitle", title);
-    localStorage.setItem("candidates", JSON.stringify(candidates));
+    await setDoc(doc(db, "elections", "current"), {
+        title: title,
+        candidates: candidates
+    });
 
     document.getElementById("message").innerHTML =
-    "✅ Election created successfully!";
-
-}
+    "✅ Election Created Successfully!";
+              }
 
 
 // ===============================
