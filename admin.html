@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FIDEEN eVote Admin</title>
+
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -12,18 +15,31 @@
 
 <h1>🗳️ FIDEEN eVote Admin</h1>
 
-<input type="text" id="pollTitle" placeholder="Election Title">
+<input
+type="text"
+id="pollTitle"
+placeholder="Election Title">
 
-<textarea id="candidateList" rows="6"
+<br><br>
+
+<textarea
+id="candidateList"
+rows="8"
 placeholder="Enter one candidate per line"></textarea>
+
+<br><br>
 
 <button onclick="createPoll()">
 Create Election
 </button>
 
+<p id="message"></p>
+
 </div>
 
-<script src="script.js"></script>
+<!-- IMPORTANT -->
+<script type="module" src="script.js"></script>
 
 </body>
+
 </html>
